@@ -1,0 +1,22 @@
+version: '3.8'
+services:
+  php:
+    build:
+      context: .
+      dockerfile: ./docker/php/Dockerfile
+      target: development
+    environment:
+      - PHP_DATE_TIMEZONE=${PHP_DATE_TIMEZONE:-UTC}
+    volumes:
+      - ./app:/var/www/html:rw,cached
+      - ./public:/srv/sylius/public:rw,delegated
+  nginx:
+    build:
+      context: .
+      dockerfile: ./docker/nginx/Dockerfile
+    volumes:
+      - ./app/public:/srv/sylius/public:ro
+    ports:
+      - "80:80"
+    depends_on:
+      - php
