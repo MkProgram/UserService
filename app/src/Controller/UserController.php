@@ -6,13 +6,15 @@ use App\Entity\User;
 use App\Repository\UserRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
+use Nelmio\ApiDocBundle\Annotation\Model;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
+use OpenApi\Annotations as OA;
 
-#[Route('/user', name: 'user_')]
+#[Route('/api/user', name: 'user_')]
 class UserController extends AbstractController
 {
 
@@ -28,6 +30,19 @@ class UserController extends AbstractController
         $this->serializer = $serializer;
     }
 
+
+    /**
+     * @OA\Tag(name="User")
+     * @OA\Response(
+     *     response=200,
+     *     description="Returns a collection of users",
+     *     @OA\JsonContent(
+     *          type="array",
+     *          @OA\Items(ref=@Model(type=User::class))
+     *     )
+     * )
+     * @return JsonResponse
+     */
     #[Route('/', name: 'index', methods: ['GET'])]
     public function indexAction(): JsonResponse
     {
@@ -36,6 +51,23 @@ class UserController extends AbstractController
         );
     }
 
+    /**
+     * @OA\Tag(name="User")
+     * @OA\Response(
+     *     response=200,
+     *     description="Returns a specific user.",
+     *     @Model(type=User::class)
+     * )
+     * @OA\Parameter(
+     *     name="id",
+     *     in="path",
+     *     description="ID for the specific user.",
+     *     @OA\Schema(type="integer")
+     * )
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
     #[Route('/{id}', name: 'get_item', methods: ['GET'])]
     public function getItemAction(Request $request): JsonResponse
     {
@@ -46,6 +78,16 @@ class UserController extends AbstractController
     }
 
     /**
+     * @OA\Tag(name="User")
+     * @OA\Response(
+     *     response=200,
+     *     description="Creates a new user.",
+     *     @Model(type=User::class)
+     * )
+     * @OA\RequestBody(
+     *      @Model(type=User::class, groups={"user:write"})
+     * )
+     *
      * @throws OptimisticLockException
      * @throws ORMException
      */
@@ -60,6 +102,22 @@ class UserController extends AbstractController
     }
 
     /**
+     * @OA\Tag(name="User")
+     * @OA\Response(
+     *     response=200,
+     *     description="Updates a specific user.",
+     *     @Model(type=User::class)
+     * )
+     * @OA\RequestBody(
+     *      @Model(type=User::class, groups={"user:write"})
+     * )
+     * @OA\Parameter(
+     *     name="id",
+     *     in="path",
+     *     description="ID for the specific user.",
+     *     @OA\Schema(type="integer")
+     * )
+     *
      * @param Request $request
      * @return JsonResponse
      * @throws ORMException
@@ -80,6 +138,19 @@ class UserController extends AbstractController
     }
 
     /**
+     * @OA\Tag(name="User")
+     * @OA\Response(
+     *     response=200,
+     *     description="Deletes a specific user.",
+     *     @Model(type=User::class)
+     * )
+     * @OA\Parameter(
+     *     name="id",
+     *     in="path",
+     *     description="ID for the specific user.",
+     *     @OA\Schema(type="integer")
+     * )
+     *
      * @param Request $request
      * @return JsonResponse
      * @throws ORMException

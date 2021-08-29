@@ -35,7 +35,7 @@ class UserApiTest extends WebTestCase
 
 
     public function testCanGetAllUser() {
-        $this->client->request('GET', '/user/');
+        $this->client->request('GET', '/api/user/');
         $this->assertResponseIsSuccessful();
     }
 
@@ -44,7 +44,7 @@ class UserApiTest extends WebTestCase
         $repository = static::getContainer()->get(UserRepository::class);
         $user = $repository->findOneBy(['email' => "example@gmail.com"]);
 
-        $this->client->request('GET', '/user/'. $user->getId() );
+        $this->client->request('GET', '/api/user/'. $user->getId() );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $userData = json_decode($response->getContent(), true);
@@ -59,7 +59,7 @@ class UserApiTest extends WebTestCase
             "userName" => "ErenYeager"
         ];
         $this->client->request("POST",
-            "/user/",
+            "/api/user/",
             [],
             [],
             [
@@ -96,7 +96,7 @@ class UserApiTest extends WebTestCase
         ];
         $this->client->request(
             "PUT",
-            "/user/".$userData['id'],
+            "/api/user/".$userData['id'],
             [],
             [],
             [
@@ -121,7 +121,7 @@ class UserApiTest extends WebTestCase
         $this->assertArrayHasKey("id", $userData);
         $this->client->request(
             "DELETE",
-            "/user/".$userData['id']
+            "/api/user/".$userData['id']
         );
         $this->assertResponseIsSuccessful();
         $repository = static::getContainer()->get(UserRepository::class);
