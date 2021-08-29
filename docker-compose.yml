@@ -7,6 +7,9 @@ services:
       target: development
     environment:
       - PHP_DATE_TIMEZONE=${PHP_DATE_TIMEZONE:-UTC}
+      - XDEBUG_CONFIG=${XDEBUG_CONFIG:-discover_client_host=1}
+      - XDEBUG_MODE=${XDEBUG_MODE:-debug}
+      - PHP_IDE_CONFIG=serverName=userservice
     volumes:
       - ./app:/var/www/html:rw,cached
       - ./app/public:/srv/sylius/public:rw,delegated

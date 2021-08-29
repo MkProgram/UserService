@@ -24,7 +24,6 @@ RUN set -eux; \
 		libzip-dev \
 		zlib-dev \
 	; \
-	\
 	docker-php-ext-configure gd; \
 	docker-php-ext-configure zip; \
 	docker-php-ext-install -j$(nproc) \
@@ -82,6 +81,14 @@ RUN set -eux; \
 	chmod +x bin/console; sync;
 
 FROM composer as development
+
+RUN pecl install \
+      xdebug \
+    ; \
+    pecl clear-cache; \
+    docker-php-ext-enable \
+        xdebug \
+    ;
 
 FROM base as production
 
