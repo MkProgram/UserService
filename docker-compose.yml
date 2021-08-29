@@ -9,7 +9,7 @@ services:
       - PHP_DATE_TIMEZONE=${PHP_DATE_TIMEZONE:-UTC}
     volumes:
       - ./app:/var/www/html:rw,cached
-      - ./public:/srv/sylius/public:rw,delegated
+      - ./app/public:/srv/sylius/public:rw,delegated
   nginx:
     build:
       context: .
@@ -20,3 +20,16 @@ services:
       - "80:80"
     depends_on:
       - php
+  mysql:
+    image: mysql:5.7.35
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-nopassword}
+      - MYSQL_DATABASE=userservice
+      - MYSQL_USER=userservice
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD:-nopassword}
+    volumes:
+      - mysql-data:/var/lib/mysql:rw
+    ports:
+      - "3306:3306"
+volumes:
+  mysql-data:
