@@ -3,21 +3,57 @@
 namespace App\Repository;
 
 use App\Entity\User;
+use App\Repository\Adapter\AdapterInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
-/**
- * @method User|null find($id, $lockMode = null, $lockVersion = null)
- * @method User|null findOneBy(array $criteria, array $orderBy = null)
- * @method User[]    findAll()
- * @method User[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
- */
-class UserRepository extends ServiceEntityRepository
+class UserRepository
 {
-    use RepositoryTrait;
 
-    public function __construct(ManagerRegistry $registry)
+    private AdapterInterface $adapter;
+
+    public function __construct(AdapterInterface $adapter)
     {
-        parent::__construct($registry, User::class);
+        $this->adapter = $adapter;
+    }
+
+    public function find(int $id): ?User
+    {
+        return $this->adapter->find($id);
+    }
+
+    public function findOneBy(array $criteria, array $orderBy = null): ?User
+    {
+        return $this->adapter->findOneBy($criteria, $orderBy);
+    }
+
+    public function findAll(): array
+    {
+        return $this->adapter->findAll();
+    }
+
+    public function findBy(array $criteria, array $orderBy = null): array
+    {
+        return $this->adapter->findBy($criteria, $orderBy);
+    }
+
+    /**
+     * @param User $data
+     * @param bool $flush
+     * @return mixed
+     */
+    public function add(User $data, bool $flush = true): void
+    {
+        $this->adapter->add($data, $flush);
+    }
+
+    /**
+     * @param User $data
+     * @param bool $flush
+     * @return mixed
+     */
+    public function remove(User $data, bool $flush = true): void
+    {
+        $this->adapter->remove($data, $flush);
     }
 }
