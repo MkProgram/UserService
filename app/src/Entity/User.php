@@ -15,10 +15,14 @@ class User
     private int $id;
 
     #[ORM\Column(type: "string", length: 32)]
+    private string $firstName;
+    #[ORM\Column(type: "string", length: 32)]
+    private string $lastName;
+
+    #[ORM\Column(type: "string", length: 32)]
     private string $userName;
     #[ORM\Column(type: "string", length: 64)]
     private string $email;
-
 
     public function getId(): ?int
     {
@@ -55,5 +59,44 @@ class User
     public function setEmail(string $email): void
     {
         $this->email = $email;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFirstName(): string
+    {
+        return $this->firstName;
+    }
+
+    /**
+     * @param string $firstName
+     */
+    public function setFirstName(string $firstName): void
+    {
+        $this->firstName = $firstName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLastName(): string
+    {
+        return $this->lastName;
+    }
+
+    /**
+     * @param string $lastName
+     */
+    public function setLastName(string $lastName): void
+    {
+        $this->lastName = $lastName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFullName(): string {
+        return $this->firstName . " " . $this->lastName;
     }
 }
