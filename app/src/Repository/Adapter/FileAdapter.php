@@ -3,7 +3,6 @@
 namespace App\Repository\Adapter;
 
 use App\FileManager\FileManagerInterface;
-use Symfony\Component\Serializer\SerializerInterface;
 
 class FileAdapter implements AdapterInterface
 {

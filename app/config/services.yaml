@@ -35,9 +35,8 @@ services:
 
     App\Repository\Adapter\FileAdapter:
         arguments:
-            $entityClass: 'App\Entity\User'
             $manager: '@App\FileManager\XmlFileManager'
 
     App\Repository\UserRepository:
         arguments:
-            $adapter: '@App\Repository\Adapter\FileAdapter'
+            $adapter: '@App\Repository\Adapter\DatabaseAdapter'
