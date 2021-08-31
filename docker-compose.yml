@@ -7,16 +7,32 @@ services:
       target: development
     environment:
       - PHP_DATE_TIMEZONE=${PHP_DATE_TIMEZONE:-UTC}
+      - XDEBUG_CONFIG=${XDEBUG_CONFIG:-discover_client_host=1}
+      - XDEBUG_MODE=${XDEBUG_MODE:-debug}
+      - PHP_IDE_CONFIG=serverName=userservice
     volumes:
       - ./app:/var/www/html:rw,cached
-      - ./public:/srv/sylius/public:rw,delegated
+      - ./app/public:/srv/sylius/public:rw,delegated
   nginx:
     build:
       context: .
       dockerfile: ./docker/nginx/Dockerfile
     volumes:
-      - ./app/public:/srv/sylius/public:ro
+      - ./app/public:/srv/sylius/public:rw
     ports:
       - "80:80"
     depends_on:
       - php
+  mysql:
+    image: mysql:5.7.35
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-nopassword}
+      - MYSQL_DATABASE=userservice
+      - MYSQL_USER=userservice
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD:-nopassword}
+    volumes:
+      - mysql-data:/var/lib/mysql:rw
+    ports:
+      - "3306:3306"
+volumes:
+  mysql-data:

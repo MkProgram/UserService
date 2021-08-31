@@ -1,0 +1,11 @@
+App\Entity\User:
+  user_1:
+    firstName: <firstName()>
+    lastName: <lastName()>
+    username: <userName()>
+    email: 'example@gmail.com'
+  user_{2..10}:
+    firstName: <firstName()>
+    lastName: <lastName()>
+    username: <userName()>s
+    email: <email()>
