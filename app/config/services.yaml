@@ -29,10 +29,15 @@ services:
         arguments:
             $entityClass: 'App\Entity\User'
 
-    App\Repository\Adapter\XmlFileAdapter:
+    App\FileManager\XmlFileManager:
         arguments:
             $filePath: '%source_file_path%'
 
+    App\Repository\Adapter\FileAdapter:
+        arguments:
+            $entityClass: 'App\Entity\User'
+            $manager: '@App\FileManager\XmlFileManager'
+
     App\Repository\UserRepository:
         arguments:
-            $adapter: '@App\Repository\Adapter\DatabaseAdapter'
+            $adapter: '@App\Repository\Adapter\FileAdapter'

@@ -35,7 +35,7 @@ class UserApiTest extends WebTestCase
 
 
     public function testCanGetAllUser() {
-        $this->client->request('GET', '/api/user/');
+         $this->client->request('GET', '/api/user/');
         $this->assertResponseIsSuccessful();
     }
 

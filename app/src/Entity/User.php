@@ -13,25 +13,30 @@ class User
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: "integer")]
-    private int $id;
+    #[Groups(["user:read"])]
+    private ?int $id = null;
 
     #[ORM\Column(type: "string", length: 32)]
-    #[Groups(["user:write"])]
+    #[Groups(["user:write", "user:read"])]
     private string $firstName;
     #[ORM\Column(type: "string", length: 32)]
-    #[Groups(["user:write"])]
+    #[Groups(["user:write", "user:read"])]
     private string $lastName;
 
     #[ORM\Column(type: "string", length: 32)]
-    #[Groups(["user:write"])]
+    #[Groups(["user:write", "user:read"])]
     private string $userName;
     #[ORM\Column(type: "string", length: 64)]
-    #[Groups(["user:write"])]
+    #[Groups(["user:write", "user:read"])]
     private string $email;
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function setId(int $id) {
+        $this->id = $id;
     }
 
     /**
